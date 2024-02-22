@@ -208,7 +208,7 @@ Si consideri il problema di determinare la distanza di edit tra due stringhe (Ed
 - se $|s1|$ = 0, allora $\mathrm{edit\_distance}(s1,s2) = |s2|$;
 - se $|s2|$ = 0, allora $\mathrm{edit\_distance}(s1,s2) = |s1|$;
 - altrimenti, siano:
-  - $d_{\mathrm{no-op}} =
+  - $d_{\mathrm{noop}} =
         \begin{cases}
         \mathrm{edit\_distance}(\mathrm{rest}(s1),\mathrm{rest}(s2)) & \mathrm{se\ } s1[0]=s2[0] \\
         \infty & \mathrm{altrimenti}

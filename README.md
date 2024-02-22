@@ -195,11 +195,52 @@ $ ./main_ex1 /tmp/data/records.csv /tmp/data/sorted.csv 27 1
 
 ### Linguaggio richiesto: C
 
-### Testo
+Si consideri il problema di determinare la distanza di edit tra due stringhe (Edit distance): date due stringhe s1 e s2, non necessariamente della stessa lunghezza, determinare il minimo numero di operazioni necessarie per trasformare la stringa s2 in s1. Si assuma che le operazioni disponibili siano: cancellazione e inserimento. Esempi:
+
+- "casa" e "cassa" hanno edit distance pari a 1 (1 cancellazione);
+- "casa" e "cara" hanno edit distance pari a 2 (1 cancellazione + 1 inserimento);
+- “vinaio” e “vino” hanno edit distance=2 (2 inserimenti);
+- "tassa" e "passato" hanno edit distance pari a 4 (3 cancellazioni + 1 inserimento);
+- "pioppo" e "pioppo" hanno edit distance pari a 0.
+
+1. Si implementi una versione ricorsiva della funzione edit\_distance basata sulle seguenti osservazioni (indichiamo con $|s|$ la lunghezza di $s$ e con $\mathrm{rest}(s)$ la sottostringa di $s$ ottenuta ignorando il primo carattere di $s$):
+
+- se $|s1|$ = 0, allora $\mathrm{edit\_distance}(s1,s2) = |s2|$;
+- se $|s2|$ = 0, allora $\mathrm{edit\_distance}(s1,s2) = |s1|$;
+- altrimenti, siano:
+  - $d_{\mathrm{no-op}} =
+        \begin{cases}
+        \mathrm{edit\_distance}(\mathrm{rest}(s1),\mathrm{rest}(s2)) & \mathrm{se\ } s1[0]=s2[0] \\
+        \infty & \mathrm{altrimenti}
+        \end{cases}$
+  - $d_{\mathrm{canc}} = 1+ \mathrm{edit\_distance}(s1,\mathrm{rest}(s2))$
+  - $d_{\mathrm{ins}} = 1+ \mathrm{edit\_distance}(\mathrm{rest}(s1),s2)$
+
+Si ha: $\mathrm{edit\_distance}(s1,s2)=\min\{d_{\mathrm{no-op}},d_{\mathrm{canc}},d_{\mathrm{ins}}\}$
+
+1. Si implementi una seconda versione edit\_distance\_dyn della funzione, adottando una strategia di programmazione dinamica. Tale versione deve essere anch'essa ricorsiva (in particolare, essa può essere facilmente ottenuta a partire dall'implementazione richiesta al punto precedente).
+
+*Nota*: Le definizioni sopra riportate non corrispondono al modo usuale di definire la distanza di edit. Sono del tutto sufficienti però per risolvere l'esercizio e sono quelle su cui dovrà essere basato il codice prodotto.
 
 ### Unit Testing
 
+Implementare gli unit-test degli algoritmi secondo le indicazioni suggerite nel documento Unit Testing.
+
 ### Uso delle funzioni implementate
+
+Il file `dictionary.txt` che potete trovare dalle macchine del laboratorio seguendo il path
+
+```
+/usr/NFS/Linux/labalgoritmi/datasets/
+```
+
+contiene l'elenco (di una parte significativa) delle parole italiane. Le parole sono scritte di seguito, ciascuna su una riga.
+
+Il file `correctme.txt` contiene una citazione di John Lennon. La citazione presenta alcuni errori di battitura.
+
+Si implementi un'applicazione che usa la funzione edit\_distance\_dyn per determinare, per ogni parola w in correctme.txt, la lista di parole in dictionary.txt con edit distance minima da w. Si sperimenti il funzionamento dell'applicazione e si riporti in una breve relazione (circa una pagina) i risultati degli esperimenti.
+
+**Si ricorda** che i file `dictionary.txt` e `correctme.txt` non devono essere oggetto di commit su git!
 
 ### Condizioni per la consegna:
 

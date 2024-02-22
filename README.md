@@ -224,15 +224,15 @@ Implementare gli unit-test degli algoritmi secondo le indicazioni suggerite nel 
 
 ### Uso delle funzioni implementate
 
-Il file `dictionary.txt` che potete trovare dalle macchine del laboratorio seguendo il path
+All'indirizzo:
 
-```
-/usr/NFS/Linux/labalgoritmi/datasets/
-```
+> [https://datacloud.di.unito.it/index.php/s/gfoEndRSfwQKiHS](https://datacloud.di.unito.it/index.php/s/gfoEndRSfwQKiHS)
 
-contiene l'elenco (di una parte significativa) delle parole italiane. Le parole sono scritte di seguito, ciascuna su una riga.
+potete trovare un dizionario (`dictionary.txt`) e un file da correggere (`correctme.txt`).
 
-Il file `correctme.txt` contiene una citazione di John Lennon. La citazione presenta alcuni errori di battitura.
+Il dizionario contiene un elenco di parole. Le parole sono scritte di seguito, ciascuna su una riga.
+
+Il file `correctme.txt` contiene un testo da correggere. Alcune parole in questo testo non ci sono nel dizionario.
 
 Si implementi un'applicazione che usa la funzione edit\_distance\_dyn per determinare, per ogni parola w in correctme.txt, la lista di parole in dictionary.txt con edit distance minima da w. Si sperimenti il funzionamento dell'applicazione e si riporti in una breve relazione (circa una pagina) i risultati degli esperimenti.
 

@@ -169,12 +169,13 @@ separati da `\n`.
 Usando l'algoritmo implementato precedentemente, si realizzi la seguente funzione per ordinare *record* contenuti nel file `records.csv` in ordine non decrescente secondo i valori contenuti nei tre campi "field".
 
 ```
-void sort_records(FILE *infile, FILE *outfile, size_t field);
+void sort_records(FILE *infile, FILE *outfile, size_t field, size_t algo);
 ```
 
 - `infile` è il file contenente i record da ordinare;
 - `outfile` è il file nel quale salvare i record ordinati (che deve essere diverso da `infile`);
 - `field` può valere 1, 2 o 3 e indica quale dei tre campi deve essere usato per ordinare i record.
+- `algo` può valere 1 o 2 e indica quale algoritmo di ordinamento deve essere usato (MergeSort o QuickSort) per ordinare i record.
 
 Si misurino i tempi di risposta per i due algoritmi, per ciascuno dei tre field che si possono usare come chiave di ordinamento, e si produca una breve relazione in cui si riportano i risultati ottenuti insieme a un loro commento. Il commento deve essere basato su statistiche numeriche sui tempi di esecuzione misurati. Nel caso l'ordinamento si protragga per più di 10 minuti potete interrompere l'esecuzione e riportare un fallimento dell'operazione. I risultati sono quelli che vi sareste aspettati? Se sì, perché? Se no, fate delle ipotesi circa il motivo per cui gli algoritmi non funzionano come vi aspettate, verificatele e riportate quanto scoperto nella relazione. I risultati dipendono dal campo usato come chiave di ordinamento?
 
@@ -194,6 +195,8 @@ $ ./main_ex1 /tmp/data/records.csv /tmp/data/sorted.csv 27 1
 ## Esercizio 2 - Edit distance
 
 ### Linguaggio richiesto: C
+
+**Attenzione: il testo di questo esercizio non è ancora definitivo e sarà finalizzato all'aggiunta dell'attività coderunner su Moodle.**
 
 Si consideri il problema di determinare la distanza di edit tra due stringhe (Edit distance): date due stringhe s1 e s2, non necessariamente della stessa lunghezza, determinare il minimo numero di operazioni necessarie per trasformare la stringa s2 in s1. Si assuma che le operazioni disponibili siano: cancellazione e inserimento. Esempi:
 

@@ -129,7 +129,7 @@ void quick_sort(void *base, size_t nitems, size_t size, int (*compar)(const void
 - `base` è un puntatore al primo elemento dell'array da ordinare;
 - `nitems` è il numero di elementi nell'array da ordinare;
 - `size` è la dimensione in bytes di ogni elemento dell'array;
-- `compar` è il criterio secondo cui ordinare i dati (dati due **puntatori a elementi** dell'array, restituisce un numero maggiore, uguale o minore di zero se il primo argomento è rispettivamente maggiore, uguale o minore del secondo). 
+- `compar` è il criterio secondo cui ordinare i dati (dati due **puntatori a elementi** dell'array, restituisce un numero maggiore, uguale o minore di zero se il primo argomento è rispettivamente maggiore, uguale o minore del secondo).
 
 È anche possibile implementare in alternativa i seguenti prototipi, che ordinano dati a patto che siano organizzati in un array di puntatori:
 
@@ -310,7 +310,7 @@ public interface AbstractGraph<V,L> {
   public boolean isDirected(); // dice se il grafo è diretto o meno -- O(1)
   public boolean isLabelled(); // dice se il grafo è etichettato o meno -- O(1)
   public boolean addNode(V a); // aggiunge un nodo -- O(1)
-  public boolean addEdge(V a, V b, L l); // aggiunge un arco dati estremi ed etichetta -- O(1)
+  public boolean addEdge(V a, V b, L l); // aggiunge un arco dati estremi ed etichetta -- O(1) (*)
   public boolean containsNode(V a); // controlla se un nodo è nel grafo -- O(1)
   public boolean containsEdge(V a, V b); // controlla se un arco è nel grafo -- O(1) (*)
   public boolean removeNode(V a); // rimuove un nodo dal grafo -- O(N)
@@ -367,7 +367,7 @@ public class Prim {
     // restituisce la collezione degli archi che formano la foresta
   }
   public static void main(String[] args) {
-    // leggi i dati CSV del grafo dal percorso in args[1] 
+    // leggi i dati CSV del grafo dal percorso in args[1]
     // calcola la minima foresta ricoprente con minimumSpanningForest
     // scrivi su standard output solo la descrizione della foresta calcolata come CSV con formato analogo a quello in input
     // su standard error si possono scrivere ulteriori informazioni, come il numero di nodi e archi nella foresta calcolata,

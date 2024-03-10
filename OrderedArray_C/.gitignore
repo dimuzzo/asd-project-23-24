@@ -1,0 +1,6 @@
+*.csv
+
+#PER PROGETTO C
+OrderedArray_C/src/unity*
+OrderedArray_C/bin/
+OrderedArray_C/build/

@@ -1,9 +1,5 @@
 NUOVO FILE
 
-<<<<<<< HEAD
 Paperino, Zio Paperone, Qui, Quo, Qua abitano a Paperopoli.
-=======
-Paperino, Zio Paperone, Qui, Quo, Qua abitano a Paperopoli
 
-Topolino 
->>>>>>> 8bbd5407a80ee281c2163645cdf5815faf0db5d1
+Topolino, Pippo, Minnie abitano a Topolinia.

@@ -1,4 +1,6 @@
 import java.util.Comparator;
+import java.io.*;
+import java.util.*;
 
 public interface AbstractQueue<E> {
   public boolean empty(); // controlla se la coda è vuota -- O(1)
@@ -25,9 +27,13 @@ public class PriorityQueue<E> implements AbstractQueue<E>{
     }
 
     public boolean push(E e){
+      if(contains(e)){
+        return false;
+      }
       heap.add(e);
-      indexMap.put(e, heap.size() - 1);
-      heapifyUp(heap.size() - 1);
+      int index = heap.size() - 1;
+      indexMap.put(e, index);
+      heapifyUp(index);
       return true;
     }
 
@@ -37,19 +43,22 @@ public class PriorityQueue<E> implements AbstractQueue<E>{
 
     public E top(){
       if (empty()){ 
-        throw new NoSuchElementException("Queue is empty");
+        return null;
       }
         return heap.get(0);
     }
 
     public void pop(){
       if (empty()){ 
-        throw new NoSuchElementException("Queue is empty");
+        return;
       }
-      swap(0, heap.size() - 1);
-      indexMap.remove(heap.get(heap.size() - 1));
-      heap.remove(heap.size() - 1);
-      heapifyDown(0);
+      int last_index = heap.size() - 1;
+      swap(0, last_index);
+      indexMap.remove(heap.get(last_index));
+      heap.remove(last_index);
+      if(!empty()){
+        heapifyDown(0);
+      }
     }
 
     public boolean remove(E e){
@@ -57,19 +66,27 @@ public class PriorityQueue<E> implements AbstractQueue<E>{
       if (index == null){ 
         return false;
       }
-      swap(index, heap.size() - 1);
+      int last_index = heap.size() - 1;
+      swap(index, last_index);
       indexMap.remove(e);
-      heap.remove(heap.size() - 1);
-      heapifyDown(index);
+      heap.remove(last_index);
+      if(!empty() && (index < heap.size())){
+        heapifyUp(index);
+        heapifyDown(index);
+      }
       return true;
     }
 
     public void heapifyUp(int index) {
       while (index > 0) {
           int parent = (index - 1) / 2;
-          if (compare(heap.get(index), heap.get(parent)) >= 0) break;
-          swap(index, parent);
-          index = parent;
+          if (compare(heap.get(index), heap.get(parent)) < 0){
+            swap(index, parent);
+            index = parent;
+          }
+          else{
+            break;
+          }
       }
     }
 
@@ -78,15 +95,16 @@ public class PriorityQueue<E> implements AbstractQueue<E>{
       int left = 2 * index + 1;
       int right = 2 * index + 2;
 
-      if (left < heap.size() && compare(heap.get(left), heap.get(smallest)) < 0)
+      if (left < heap.size() && compare(heap.get(left), heap.get(smallest)) < 0){
           smallest = left;
-
-      if (right < heap.size() && compare(heap.get(right), heap.get(smallest)) < 0)
+      }
+      if (right < heap.size() && compare(heap.get(right), heap.get(smallest)) < 0){
           smallest = right;
-          if (smallest != index) {
-            swap(index, smallest);
-            heapifyDown(smallest);
-        }
+      }
+      if (smallest != index) {
+          swap(index, smallest);
+          heapifyDown(smallest);
+      }
     }
 
     public void swap(int i, int j) {
@@ -98,13 +116,6 @@ public class PriorityQueue<E> implements AbstractQueue<E>{
     }
 
     public int compare(E a, E b) {
-      if (comparator != null) {
-          return comparator.compare(a, b);
-      } else {
-          Comparable<? super E> comparableA = (Comparable<? super E>) a;
-          return comparableA.compareTo(b);
-      }
+        return comparator.compare(a, b);
     } 
 }
-
-

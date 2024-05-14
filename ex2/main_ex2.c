@@ -2,6 +2,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <limits.h>
+
+int minimum(int ins, int canc, int sub){
+    if(ins <= canc && ins <= sub){
+        return ins;
+    }
+    if(canc <= ins && canc <= sub){
+        return canc;
+    }
+    else{
+        return sub;
+    }
+}
 
 int edit_distance(const char *s1, const char* s2){
     if(*s1 == '\0'){
@@ -10,16 +23,23 @@ int edit_distance(const char *s1, const char* s2){
     if(*s2 == '\0'){
         return strlen(s1);
     }
+    if(s1[0] == s2[0]){
+        return edit_distance(s1+1, s2+1);
+    }
+    else{
+        int ins = 1 + edit_distance(s1+1, s2);
+        int canc = 1 + edit_distance(s1, s2+1);
+        int sub = 0;
 
-    int no_op = edit_distance(s1+1, s2+1);
-    int canc = 1 + edit_distance(s1, s2+1);
-    int ins = 1 + edit_distance(s1+1, s2);
+        if(s1[0] == s2[0]){
+            sub = 1 + edit_distance(s1+1, s2+1);
+        }
+        if(s1[0] != s2[0]){
+            sub = INT_MAX;
+        }
 
-    return ((no_op < canc) ? ((no_op < ins) ? no_op : ins) : ((canc < ins) ? canc : ins));
-}
-
-int edit_distance_dyn(const char *s1, const char* s2){
-
+        return minimum(ins, canc, sub);
+    }
 }
 
 int main(){

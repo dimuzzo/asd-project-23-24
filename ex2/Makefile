@@ -7,7 +7,11 @@ OBJ_DIR = obj
 UNITY_SRC = $(SRC_DIR)/unity.c
 UNITY_OBJ = $(OBJ_DIR)/unity.o
 
-all: $(BIN_DIR)/main_ex2 $(BIN_DIR)/test_ex2
+all: directories $(BIN_DIR)/main_ex2 $(BIN_DIR)/test_ex2
+
+directories:
+	mkdir -p $(BIN_DIR)
+	mkdir -p $(OBJ_DIR)
 
 $(BIN_DIR)/main_ex2: $(SRC_DIR)/main_test.c $(SRC_DIR)/edit_distance.c
 	$(CC) $(CCFLAGS) -o $@ $^

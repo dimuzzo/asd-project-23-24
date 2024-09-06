@@ -17,20 +17,20 @@ void main_edit_distance(FILE *correct, FILE *dictionary){
         printf("Suggerimenti: \n");
         int min_edit = strlen(word);
         while (fscanf(dictionary, "%29s", dict) == 1) {
-            int res = edit_distance_dyn(word,dict);
-        if(res < min_edit)
-            min_edit = res;
-    }
-    rewind(dictionary);
-    while (fscanf(dictionary, "%29s", dict) == 1) {
-        *word = tolower(*word);
-        int res = edit_distance_dyn(word,dict);
-        if(res == min_edit)
-            printf("\t %s\n",dict);
-    }
-    rewind(dictionary);
-    }
-   
+            *word = tolower(*word);
+            int res = edit_distance_dyn(word, dict);
+            if(res < min_edit)
+                min_edit = res;
+        }
+        rewind(dictionary);
+        while (fscanf(dictionary, "%29s", dict) == 1) {
+            *word = tolower(*word);
+            int res = edit_distance_dyn(word, dict);
+            if(res == min_edit)
+                printf("\t %s\n", dict);
+        }
+        rewind(dictionary);
+    } 
 }
 
 int main(int argc, char *argv[]){
@@ -58,7 +58,7 @@ int main(int argc, char *argv[]){
         return 1;
     }
    
-    main_edit_distance(file_input1,file_input2);
+    main_edit_distance(file_input1, file_input2);
 
     // Chiusura dei file
     fclose(file_input1);

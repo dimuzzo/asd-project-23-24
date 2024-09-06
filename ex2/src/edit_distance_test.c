@@ -5,6 +5,7 @@
 #include <limits.h>
 #include "unity.h"
 #include "edit_distance.h"
+#include "unity_internals.h"
 
 void edit_distance_test_onecanc(){
     TEST_ASSERT(edit_distance_dyn("casa", "cassa") == 1);

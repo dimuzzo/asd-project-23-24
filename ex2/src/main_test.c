@@ -11,19 +11,21 @@ void main_edit_distance(FILE *correct, FILE *dictionary){
     int word_readed = 0; // Contatore per il numero di dati letti
 
     while (fscanf(correct, "%29s", word) == 1) {
-        printf("Parola : \t %s\n", word);
-        printf("Suggerimenti : \n");
+        *word = tolower(*word);
+        printf("Parola: \t %s\n", word);
+        printf("Suggerimenti: \n");
         int min_edit = strlen(word);
         while (fscanf(dictionary, "%29s", dict) == 1) {
-        int res = edit_distance_dyn(word,dict);
+            int res = edit_distance_dyn(word,dict);
         if(res < min_edit)
-        min_edit = res;
+            min_edit = res;
     }
     rewind(dictionary);
     while (fscanf(dictionary, "%29s", dict) == 1) {
+        *word = tolower(*word);
         int res = edit_distance_dyn(word,dict);
         if(res == min_edit)
-        printf("\t %s\n",dict);
+            printf("\t %s\n",dict);
     }
     rewind(dictionary);
     }
@@ -55,7 +57,6 @@ int main(int argc, char *argv[]){
         return 1;
     }
    
-   
     main_edit_distance(file_input1,file_input2);
 
     // Chiusura dei file
@@ -63,5 +64,4 @@ int main(int argc, char *argv[]){
     fclose(file_input2);
 
     return 0;
-
 }

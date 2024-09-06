@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
+#include "edit_distance.h"
 
 int min(int st, int nd, int rd){
     if(st <= nd && st <= rd) return st;

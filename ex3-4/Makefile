@@ -31,7 +31,7 @@ $(BIN_DIR)/%.class: $(SRC_DIR)/%.java | $(BIN_DIR)
 
 # Regola per l'esecuzione dei test
 test: all
-	$(JAVA) -cp $(LIB_DIR)/*:$(BIN_DIR):$(JUNIT_PATH):$(HAMCREST_PATH) org.junit.runner.JUnitCore
+	$(JAVA) -cp $(LIB_DIR)/*:$(BIN_DIR):$(JUNIT_PATH):$(HAMCREST_PATH) org.junit.runner.JUnitCore $(TESTING_CLASSES)
 
 
 # Regola per la pulizia dei file compilati

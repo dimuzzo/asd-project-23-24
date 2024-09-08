@@ -2,7 +2,7 @@ import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 
-public class PriorityQueue_Runner{
+public class PriorityQueue_Testing_Runner{
     public static void main(String[] args) {
         Result result = JUnitCore.runClasses(PriorityQueue_Testing.class);
         System.out.println("Total number of tests: " + result.getRunCount());

@@ -16,7 +16,7 @@ CLASSES = $(SOURCES:$(SRC_DIR)/%.java=$(BIN_DIR)/%.class)
 JAVAC_FLAGS = -d $(BIN_DIR) -cp $(LIB_DIR)/*:$(BIN_DIR)
 
 # Classi contenenti i main dei file da eseguire
-MAIN_CLASS_PRIORITYQUEUE = PriorityQueue_Runner
+MAIN_CLASS_PRIORITYQUEUE = PriorityQueue_Testing_Runner
 
 # Regola per la compilazione totale codici
 all: directories $(CLASSES)

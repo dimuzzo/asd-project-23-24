@@ -2,7 +2,7 @@ import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 
-public class Graph_Runner{
+public class Graph_Testing_Runner{
     public static void main(String[] args) {
         Result result = JUnitCore.runClasses(Graph_Testing.class);
         System.out.println("Total number of tests: " + result.getRunCount());

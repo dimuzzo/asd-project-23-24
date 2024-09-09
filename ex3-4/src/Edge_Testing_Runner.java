@@ -2,7 +2,7 @@ import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 
-public class Edge_Runner{
+public class Edge_Testing_Runner{
     public static void main(String[] args) {
         Result result = JUnitCore.runClasses(Edge_Testing.class);
         System.out.println("Total number of tests: " + result.getRunCount());

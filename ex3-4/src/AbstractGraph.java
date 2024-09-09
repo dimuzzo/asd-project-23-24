@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.Collection;
 
 public interface AbstractGraph<V,L> {
   public boolean isDirected(); // dice se il grafo è diretto o meno -- O(1)

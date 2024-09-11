@@ -11,14 +11,14 @@ public class Edge<V, L> implements AbstractEdge<V, L> {
 
     @Override
     public V getStart() {
-        return start;
+        return this.start;
     }
     @Override
     public V getEnd() {
-        return end;
+        return this.end;
     }
     @Override
     public L getLabel() {
-        return label;
+        return this.label;
     }
 }

@@ -1,8 +1,6 @@
 import java.util.*;
 import java.util.Collection;
 
-import javax.xml.stream.util.EventReaderDelegate;
-
 public class Graph<V, L> implements AbstractGraph<V, L> {
     private boolean directed;
     private boolean labelled;
@@ -144,7 +142,6 @@ public class Graph<V, L> implements AbstractGraph<V, L> {
         }
         return edge.getLabel();
     }
-
 
     public void printEdge(){
         HashSet<Edge<V, L>> edges = getEdges();

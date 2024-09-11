@@ -1,6 +1,8 @@
 import java.util.*;
 import java.util.Collection;
 
+import javax.xml.stream.util.EventReaderDelegate;
+
 public class Graph<V, L> implements AbstractGraph<V, L> {
     private boolean directed;
     private boolean labelled;
@@ -28,7 +30,7 @@ public class Graph<V, L> implements AbstractGraph<V, L> {
             return false;
         }
         else{
-            adjacentArch.put(a, new HashMap<>());
+            this.adjacentArch.put(a, new LinkedList<>());
             return true;
         }
     }
@@ -82,12 +84,9 @@ public class Graph<V, L> implements AbstractGraph<V, L> {
         }
         else{
             Edge<V, L> edge = findEdge(a, b);
-            Edge<V, L> revEdge = findEdge(b, a);
-            if(directed){
-                this.adjacentArch.get(a).remove(edge);
-            }
-            else{
-                this.adjacentArch.get(a).remove(edge);
+            this.adjacentArch.get(a).remove(edge);
+            if(!directed){
+                Edge<V, L> revEdge = findEdge(b, a);
                 this.adjacentArch.get(b).remove(revEdge);
             }
             return true;
@@ -113,7 +112,7 @@ public class Graph<V, L> implements AbstractGraph<V, L> {
 
     @Override
     public Collection<V> getNodes(){
-        return this.adjacentArch.keySet();
+        return new HashSet<>(this.adjacentArch.keySet());
     }
 
     @Override
@@ -146,6 +145,14 @@ public class Graph<V, L> implements AbstractGraph<V, L> {
         return edge.getLabel();
     }
 
+
+    public void printEdge(){
+        HashSet<Edge<V, L>> edges = getEdges();
+        for(Edge<V, L> k : edges){
+            System.out.println(k.getStart().toString() + " to " + k.getEnd().toString() + " at distance " + k.getLabel().toString());
+        }
+    }
+
     private Edge<V, L> findEdge(V a, V b){
         if(containsNode(a) && containsNode(b)){
             for(Edge<V, L> edge : this.adjacentArch.get(a)){
@@ -156,5 +163,4 @@ public class Graph<V, L> implements AbstractGraph<V, L> {
         }
         return null;
     }
-
 }

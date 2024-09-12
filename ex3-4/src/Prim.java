@@ -3,9 +3,51 @@ import java.text.*;
 import java.io.*;
 
 public class Prim{
+    private static <V, L extends Number> void addAdjacent(Graph<V, L> graph, PriorityQueue<Edge<V, L>> priorityQueue, V vertix, HashSet<V> visitedNodes){
+        for(V next : graph.getNeighbours(vertix)){
+            if(!visitedNodes.contains(next)){
+                L label = graph.getLabel(vertix, next);
+                priorityQueue.push(new Edge<>(vertix, next, label));
+            }
+        }
+    }
+
     public static <V, L extends Number> Collection<? extends AbstractEdge<V, L>> minimumSpanningForest(Graph<V, L> graph) {
         // calcola la minima foresta ricoprente con l'algoritmo di Prim
         // restituisce la collezione degli archi che formano la foresta
+        PriorityQueue<Edge<V, L>> priorityQueue = new PriorityQueue<>(Comparator.comparing(edge -> edge.getLabel().doubleValue()));
+        HashSet<V> visitedNodes = new HashSet<>();
+        HashSet<V> everyNode = new HashSet<>(graph.getNodes());
+        LinkedList<Edge<V, L>> minimumSpanningForest = new LinkedList<>();
+
+        while(visitedNodes.size != everyNode.size()){
+            LinkedList<Edge<V, L>> minForest = new LinkedList<>();
+            V begin = everyNode.stream().filter(v -> !everyNode.contains(v)).findFirst().orElse(null);
+
+            if(begin == null) break;
+
+            visitedNodes.add(begin);
+            addAdjacent(graph, priorityQueue, begin, visitedNodes);
+
+            while (!priorityQueue.empty()) {
+                Edge<V, L> currentEdge = priorityQueue.top();
+                priorityQueue.pop();
+                V node = currentEdge.getEnd();
+                
+                if(!visitedNodes.contains(node)){
+                    minForest.add(currentEdge);
+                    visitedNodes.add(node);
+                    everyNode.remove(node);
+                    addAdjacent(graph, priorityQueue, node, visitedNodes);
+                }
+            }
+            minimumSpanningForest.addAll(minForest);
+        }
+        return minimumSpanningForest;
+    }
+
+    public static void forestToString(LinkedList<Edge<String, Double>> forest) {
+        
     }
       
     public static void main(String[] args) {

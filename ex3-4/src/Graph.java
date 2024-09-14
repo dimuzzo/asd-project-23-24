@@ -63,7 +63,7 @@ public class Graph<V, L> implements AbstractGraph<V, L> {
 
     @Override
     public boolean removeNode(V a){
-        if(!contains(a)){
+        if(!containsNode(a)){
             return false;
         }
         else{
@@ -114,10 +114,10 @@ public class Graph<V, L> implements AbstractGraph<V, L> {
     }
 
     @Override
-    public Collection<? extends AbstractEdge<V, L>> getEdges(){
+    public HashSet<Edge<V, L>> getEdges(){
         HashSet<Edge<V, L>> edges = new HashSet<>();
         for(List<Edge<V, L>> edgeList : this.adjacentArch.values()){
-            edges.add(edgeList);
+            edges.addAll(edgeList);
         }
         return edges;
     }
@@ -137,7 +137,7 @@ public class Graph<V, L> implements AbstractGraph<V, L> {
     @Override
     public L getLabel(V a, V b){
         Edge<V, L> edge = findEdge(a, b);
-        if(edge = null){
+        if(edge == null){
             return null;
         }
         return edge.getLabel();

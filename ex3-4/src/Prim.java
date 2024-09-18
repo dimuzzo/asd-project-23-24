@@ -22,7 +22,7 @@ public class Prim{
 
         while(visitedNodes.size() != everyNode.size()){
             LinkedList<Edge<V, L>> minForest = new LinkedList<>();
-            V begin = everyNode.stream().filter(v -> !everyNode.contains(v)).findFirst().orElse(null);
+            V begin = everyNode.stream().filter(v -> !visitedNodes.contains(v)).findFirst().orElse(null);
 
             if(begin == null) break;
 
@@ -61,7 +61,7 @@ public class Prim{
                 end = tmp;
             }
 
-        System.out.println(start + " ," + end + " ," + String.format("%.6f", edge.getLabel()));
+        System.out.println(start + "," + end + "," + String.format("%.6f", edge.getLabel()));
         weightEdges += edge.getLabel();
         }
 

@@ -26,6 +26,48 @@ public class Graph_Testing{
         g4 = new Graph<>(true, true);
     }
 
+    // Test per i grafi orientati
+    @Test
+    public void testIsDirected_g1(){
+        assertFalse(g1.isDirected());
+    }
+
+    @Test
+    public void testIsDirected_g2(){
+        assertFalse(g2.isDirected());
+    }
+
+    @Test
+    public void testIsDirected_g3(){
+        assertTrue(g3.isDirected());
+    }
+
+    @Test
+    public void testIsDirected_g4(){
+        assertTrue(g4.isDirected());
+    }
+
+    // Test per i grafi etichettati
+    @Test
+    public void testIsLabelled_g1(){
+        assertFalse(g1.isLabelled());
+    }
+
+    @Test
+    public void testIsLabelled_g2(){
+        assertTrue(g2.isLabelled());
+    }
+
+    @Test
+    public void testIsLabelled_g3(){
+        assertFalse(g3.isLabelled());
+    }
+
+    @Test
+    public void testIsLabelled_g4(){
+        assertTrue(g4.isLabelled());
+    }
+
     // Test per aggiunta di nodi
     @Test
     public void testAddNode_g1(){
@@ -361,4 +403,186 @@ public class Graph_Testing{
     }
 
     // Test per ottenere i nodi
+    @Test
+    public void testGetNodes_g1(){
+        g1.addNode(i1);
+        g1.addNode(i2);
+        g1.addNode(i3);
+        assertTrue(g1.getNodes().contains(i1));
+        assertTrue(g1.getNodes().contains(i2));
+        assertTrue(g1.getNodes().contains(i3));
+        assertFalse(g1.getNodes().contains(i4));
+    }
+
+    @Test
+    public void testGetNodes_g2(){
+        g2.addNode(18);
+        g2.addNode(200);
+        g2.addNode(35);
+        assertTrue(g2.getNodes().contains(10));
+        assertTrue(g2.getNodes().contains(200));
+        assertTrue(g2.getNodes().contains(35));
+        assertFalse(g2.getNodes().contains(50));
+    }
+
+    @Test
+    public void testGetNodes_g3(){
+        g3.addNode(i1);
+        g3.addNode(i2);
+        g3.addNode(i4);
+        assertTrue(g3.getNodes().contains(i1));
+        assertTrue(g3.getNodes().contains(i2));
+        assertTrue(g3.getNodes().contains(i4));
+        assertFalse(g3.getNodes().contains(678));
+    }
+
+    @Test
+    public void testGetNodes_g4(){
+        g4.addNode(91);
+        g4.addNode(82);
+        g4.addNode(53);
+        assertTrue(g4.getNodes().contains(91));
+        assertTrue(g4.getNodes().contains(82));
+        assertTrue(g4.getNodes().contains(53));
+        assertFalse(g4.getNodes().contains(104));
+    }
+
+    // Test per ottenere gli archi
+    @Test
+    public void testGetEdges_g1(){
+        g1.addNode(1);
+        g1.addNode(2);
+        g1.addNode(3);
+        g1.addNode(4);
+        g1.addEdge(1, 2, 5);
+        g1.addEdge(1, 3, 5);
+        g1.addEdge(1, 4, 5);
+        assertEquals(3, g1.getEdges().size() / 2);
+    }
+
+    @Test
+    public void testGetEdges_g2(){
+        g2.addNode(1);
+        g2.addNode(2);
+        g2.addNode(3);
+        g2.addNode(4);
+        g2.addEdge(1, 2, 3);
+        g2.addEdge(1, 3, 3);
+        g2.addEdge(1, 4, 3);
+        assertEquals(3, g2.getEdgesges().size() / 2);
+    }
+
+    @Test
+    public void testGetEdges_g3(){
+        g3.addNode(1);
+        g3.addNode(2);
+        g3.addNode(3);
+        g3.addNode(4);
+        g3.addEdge(1, 2, 7);
+        g3.addEdge(1, 3, 7);
+        g3.addEdge(1, 4, 7);
+        assertEquals(3, g3.getEdges().size());
+    }
+
+    @Test
+    public void testGetEdges_g4(){
+        g4.addNode(1);
+        g4.addNode(2);
+        g4.addNode(3);
+        g4.addNode(4);
+        g4.addEdge(1, 2, 5);
+        g4.addEdge(1, 3, 5);
+        g4.addEdge(1, 4, 5);
+        assertEquals(3, g4.getEdges().size());
+    }
+
+    // Test per ottenere gli archi adiacenti
+    @Test
+    public void testGetNeighbours_g1(){
+        g1.addNode(1);
+        g1.addNode(2);
+        g1.addNode(3);
+        g1.addNode(4);
+        g1.addEdge(1, 2, 5);
+        g1.addEdge(1, 3, 5);
+        g1.addEdge(1, 4, 5);
+        assertTrue(g1.getNeighbours(1).contains(2));
+        assertTrue(g1.getNeighbours(1).contains(3));
+        assertTrue(g1.getNeighbours(1).contains(4));
+        assertFalse(g1.getNeighbours(1).contains(22));
+    }
+
+    @Test
+    public void testGetNeighbours_g2(){
+        g2.addNode(1);
+        g2.addNode(2);
+        g2.addNode(3);
+        g2.addNode(4);
+        g2.addEdge(1, 2, 3);
+        g2.addEdge(1, 3, 3);
+        g2.addEdge(1, 4, 3);
+        assertTrue(g2.getNeighbours(1).contains(2));
+        assertTrue(g2.getNeighbours(1).contains(3));
+        assertTrue(g2.getNeighbours(1).contains(4));
+        assertFalse(g2.getNeighbours(1).contains(43));
+    }
+
+    @Test
+    public void testGetNeighbours_g3(){
+        g3.addNode(1);
+        g3.addNode(2);
+        g3.addNode(3);
+        g3.addNode(4);
+        g3.addEdge(1, 2, 7);
+        g3.addEdge(1, 3, 7);
+        g3.addEdge(1, 4, 7);
+        assertTrue(g3.getNeighbours(1).contains(2));
+        assertTrue(g3.getNeighbours(1).contains(3));
+        assertTrue(g3.getNeighbours(1).contains(4));
+        assertFalse(g3.getNeighbours(1).contains(8));    
+    }
+
+    @Test
+    public void testGetNeighbours_g4(){
+        g4.addNode(1);
+        g4.addNode(2);
+        g4.addNode(3);
+        g4.addNode(4);
+        g4.addEdge(1, 2, 5);
+        g4.addEdge(1, 3, 5);
+        g4.addEdge(1, 4, 5);
+        assertTrue(g4.getNeighbours(1).contains(2));
+        assertTrue(g4.getNeighbours(1).contains(3));
+        assertTrue(g4.getNeighbours(1).contains(4));
+        assertFalse(g4.getNeighbours(1).contains(77));    
+    }
+
+    // Test per ottenere le etichette (solo per grafi etichettati)
+    @Test
+    public void testGetLabel_g2(){
+        g2.addNode(1);
+        g2.addNode(2);
+        g2.addNode(3);
+        g2.addNode(4);
+        g2.addEdge(1, 2, 3);
+        g2.addEdge(1, 3, 8);
+        g2.addEdge(1, 4, 1);
+        assertEquals((long)3, (long)g2.getLabel(1, 2));
+        assertEquals((long)8, (long)g2.getLabel(1, 3));
+        assertEquals((long)1, (long)g2.getLabel(1, 4));
+    }
+
+    @Test
+    public void testGetLabel_g4(){
+        g4.addNode(1);
+        g4.addNode(2);
+        g4.addNode(3);
+        g4.addNode(4);
+        g4.addEdge(1, 2, 5);
+        g4.addEdge(1, 3, 2);
+        g4.addEdge(1, 4, 7);
+        assertEquals((long)5, (long)g4.getLabel(1, 2));
+        assertEquals((long)2, (long)g4.getLabel(1, 3));
+        assertEquals((long)7, (long)g4.getLabel(1, 4));
+    }
 }

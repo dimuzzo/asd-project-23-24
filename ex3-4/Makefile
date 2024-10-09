@@ -8,19 +8,19 @@ BIN_DIR = ./bin
 INP_DIR = ./inp
 
 # Lista di tutti i file .java da compilare
-SOURCES := $(wildcard $(SRC_DIR)/*.java)
+SOURCES := $(filter-out $(SRC_DIR)/Prim.java, $(wildcard $(SRC_DIR)/*.java)) $(SRC_DIR)/Prim.java
 
 # Lista file .class da generare
-CLASSES = $(SOURCES:$(SRC_DIR)/%.java=$(BIN_DIR)/%.class)
-
-# Opzioni compilatore java
-JAVAC_FLAGS = -d $(BIN_DIR) -cp $(LIB_DIR)/*:$(BIN_DIR)
+CLASSES = $(patsubst $(SRC_DIR)/%.java,$(BIN_DIR)/%.class,$(SOURCES))
 
 # Classi contenenti i main dei file da eseguire
 MAIN_CLASS_PRIORITYQUEUE = PriorityQueue_Testing_Runner
 MAIN_CLASS_GRAPH = Graph_Testing_Runner
 MAIN_CLASS_EDGE = Edge_Testing_Runner
 MAIN_CLASS_PRIM = Prim
+
+# Opzioni compilatore java
+JAVAC_FLAGS = -d $(BIN_DIR) -cp $(LIB_DIR)/*:$(BIN_DIR)
 
 # Regola per la compilazione totale codici
 all: directories $(CLASSES)

@@ -469,7 +469,7 @@ public class Graph_Testing{
         g2.addEdge(1, 2, 3);
         g2.addEdge(1, 3, 3);
         g2.addEdge(1, 4, 3);
-        assertEquals(3, g2.getEdgesges().size() / 2);
+        assertEquals(3, g2.getEdges().size() / 2);
     }
 
     @Test

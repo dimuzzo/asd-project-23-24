@@ -145,7 +145,7 @@ public class PriorityQueue_Testing{
         pq_String.push(s2);
         pq_String.push(s3);
         pq_String.pop();
-        assertTrue(pq_String.top != s1);
+        assertTrue(pq_String.top() != s1);
     }
 
     @Test

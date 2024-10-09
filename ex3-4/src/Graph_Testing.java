@@ -419,7 +419,7 @@ public class Graph_Testing{
         g2.addNode(18);
         g2.addNode(200);
         g2.addNode(35);
-        assertTrue(g2.getNodes().contains(10));
+        assertTrue(g2.getNodes().contains(18));
         assertTrue(g2.getNodes().contains(200));
         assertTrue(g2.getNodes().contains(35));
         assertFalse(g2.getNodes().contains(50));

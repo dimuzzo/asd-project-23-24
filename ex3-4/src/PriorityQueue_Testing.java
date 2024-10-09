@@ -36,7 +36,7 @@ public class PriorityQueue_Testing{
 
         s1 = "Jan";
         s2 = "publicService";
-        s2 = "stringOrNot";
+        s3 = "stringOrNot";
 
         this.pq_Int = new PriorityQueue<Integer>(new IntegerComparator());
         this.pq_String = new PriorityQueue<String>(new StringComparator());

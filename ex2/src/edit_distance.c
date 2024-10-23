@@ -1,10 +1,12 @@
-// libraries declaration
+// Libraries declaration
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
 #include "edit_distance.h"
 
+// Function to calculate and return the minimum value among the 3 received when called
+// st = first value, nd = second value, rd = third value
 int min(int st, int nd, int rd){
     if(st <= nd && st <= rd) return st;
 
@@ -13,6 +15,7 @@ int min(int st, int nd, int rd){
     else return rd;
 }
 
+// Recursive function to calculate the edit distance between two strings
 int edit_distance(const char *s1, const char* s2){
     if(*s1 == '\0') return strlen(s2);
 
@@ -28,24 +31,25 @@ int edit_distance(const char *s1, const char* s2){
     }
 }
 
-// Funzione ricorsiva per calcolare la distanza di modifica tra due stringhe
+// Support function for calculating the result of edit_distance_dyn
 int edit_distance_dyn_recursive(const char *s1, const char *s2, int lens1, int lens2, int **mat) {
     if (lens1 == 0) return lens2;
     if (lens2 == 0) return lens1;
 
-    // Se il risultato è già stato calcolato, ritorna il valore memorizzato
+    // If the result has already been calculated, the stored value returns
     if (mat[lens1][lens2] != -1) return mat[lens1][lens2];
 
-    // Calcolo dei costi delle tre operazioni possibili
-    int no_op = (s1[0] == s2[0]) ? edit_distance_dyn_recursive(s1 + 1, s2 + 1, lens1 - 1, lens2 - 1, mat) : INT_MAX;
-    int canc = 1 + edit_distance_dyn_recursive(s1, s2 + 1, lens1, lens2 - 1, mat); // Cancella s2[0]
-    int ins = 1 + edit_distance_dyn_recursive(s1 + 1, s2, lens1 - 1, lens2, mat); // Inserisce s1[0] in s2
+    // Calculation of the costs of the three possible operations
+    int no_op = (s1[0] == s2[0]) ? edit_distance_dyn_recursive(s1 + 1, s2 + 1, lens1 - 1, lens2 - 1, mat) : INT_MAX; // No Operation
+    int canc = 1 + edit_distance_dyn_recursive(s1, s2 + 1, lens1, lens2 - 1, mat); // Delete s2[0]
+    int ins = 1 + edit_distance_dyn_recursive(s1 + 1, s2, lens1 - 1, lens2, mat); // Insert s1[0] into s2
 
-    // Memorizza il risultato nella tabella e restituisce il valore
+    // Stores the result in the table and returns the obtained value
     mat[lens1][lens2] = min(no_op, canc, ins);
     return mat[lens1][lens2];
 }
 
+// Recursive dynamic function to calculate the edit distance between two strings
 int edit_distance_dyn(const char *s1, const char *s2) {
     if(s1 == NULL || s2 == NULL) return -1;
 

@@ -1,7 +1,4 @@
-// dichiarazione librerie
-#include <stdio.h>
-#include <stdlib.h>
-
+// Libraries declaration
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

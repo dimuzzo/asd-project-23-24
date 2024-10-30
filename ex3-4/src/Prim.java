@@ -1,13 +1,13 @@
 import java.util.*;
-import java.text.*;
+import java.text.DecimalFormat;
 import java.io.*;
 
 public class Prim{
-    private static <V, L extends Number> void addAdjacent(Graph<V, L> graph, PriorityQueue<Edge<V, L>> priorityQueue, V vertix, HashSet<V> visitedNodes){
-        for(V next : graph.getNeighbours(vertix)){
-            if(!visitedNodes.contains(next)){
-                L label = graph.getLabel(vertix, next);
-                priorityQueue.push(new Edge<>(vertix, next, label));
+    private static <V, L extends Number> void addAdjacent(Graph<V, L> graph, PriorityQueue<Edge<V, L>> priorityQueue, V vertex, HashSet<V> visitedNodes){
+        for(V neighbour : graph.getNeighbours(vertex)){
+            if(!visitedNodes.contains(neighbour)){
+                L label = graph.getLabel(vertex, neighbour);
+                priorityQueue.push(new Edge<>(vertex, neighbour, label));
             }
         }
     }
@@ -17,59 +17,53 @@ public class Prim{
         // restituisce la collezione degli archi che formano la foresta
         PriorityQueue<Edge<V, L>> priorityQueue = new PriorityQueue<>(Comparator.comparing(edge -> edge.getLabel().doubleValue()));
         HashSet<V> visitedNodes = new HashSet<>();
-        HashSet<V> everyNode = new HashSet<>(graph.getNodes());
         LinkedList<Edge<V, L>> minimumSpanningForest = new LinkedList<>();
 
-        while(visitedNodes.size() != everyNode.size()){
-            LinkedList<Edge<V, L>> minForest = new LinkedList<>();
-            V begin = everyNode.stream().filter(v -> !visitedNodes.contains(v)).findFirst().orElse(null);
-
-            if(begin == null) break;
-
-            visitedNodes.add(begin);
-            addAdjacent(graph, priorityQueue, begin, visitedNodes);
+        for(V startNode : graph.getNodes()){
+            if(!visitedNodes.contains(startNode)){
+                visitedNodes.add(startNode);
+                addAdjacent(graph, priorityQueue, startNode, visitedNodes);
+                LinkedList<Edge<V, L>> minTree = new LinkedList<>();
 
             while (!priorityQueue.empty()) {
-                Edge<V, L> currentEdge = priorityQueue.top();
+                Edge<V, L> edge = priorityQueue.top();
                 priorityQueue.pop();
-                V node = currentEdge.getEnd();
+                V nextNode = edge.getEnd();
                 
-                if(!visitedNodes.contains(node)){
-                    minForest.add(currentEdge);
-                    visitedNodes.add(node);
-                    everyNode.remove(node);
-                    addAdjacent(graph, priorityQueue, node, visitedNodes);
+                if(!visitedNodes.contains(nextNode)){
+                    visitedNodes.add(nextNode);
+                    minTree.add(edge);
+                    addAdjacent(graph, priorityQueue, nextNode, visitedNodes);
                 }
             }
 
-            minimumSpanningForest.addAll(minForest);
-        }
+            minimumSpanningForest.addAll(minTree);
+          }
+      } 
 
-        return minimumSpanningForest;
+      return minimumSpanningForest;
     }
 
     public static void forestToString(LinkedList<Edge<String, Double>> forest) {
-        forest.sort(Comparator.comparing(Edge::getLabel));
-        Double weightEdges = 0.0;
-        for(Edge<String, Double> edge : forest){
-            String start = edge.getStart();
-            String end = edge.getEnd();
-            if(start.compareTo(end) > 0){
-                // Si effettua l'ordine alfabetico tra start ed end
-                String tmp = start;
-                start = end;
-                end = tmp;
+        forest.stream().sorted(Comparator.comparing(Edge::getLabel)).forEach(edge ->
+        {
+            String startingEdge = edge.getStart();
+            String endingEdge = edge.getEnd();
+            
+            if(startingEdge.compareTo(endingEdge) > 0){
+                String tmpEdge = startingEdge;
+                startingEdge = endingEdge;
+                endingEdge = tmpEdge;
             }
 
-        System.out.println(start + "," + end + "," + String.format("%.6f", edge.getLabel()));
-        weightEdges += edge.getLabel();
-        }
+            System.out.println(startingEdge + "," + endingEdge + "," + String.format("%.6f", edge.getLabel()));
+        });
+        
+        double totalWeight = forest.stream().mapToDouble(Edge::getLabel).sum();
 
-        DecimalFormat formatD = new DecimalFormat("#.######");
-        formatD.setGroupingUsed(true);
-        formatD.setGroupingSize(3);
-        System.out.println("Archi totali: " + forest.size());
-        System.out.println("Peso totale archi: " + formatD.format(weightEdges / 1000) + " km");
+        DecimalFormat formatter = new DecimalFormat("#.######");
+        System.out.println("Total edges: " + forest.size());
+        System.out.println("Total edges' weight: " + formatter.format(totalWeight / 1000) + " km");
     }
       
     public static void main(String[] args) {
@@ -84,21 +78,23 @@ public class Prim{
         }
 
         Graph<String, Double> graph = new Graph<>(false, true);
-        String line;
-        try{
-            BufferedReader reader = new BufferedReader(new FileReader(args[0]));
+        try(BufferedReader reader = new BufferedReader(new FileReader(args[0]))){
+            String line;
             while((line = reader.readLine()) != null){
-                String[] row = line.split(",");
-                graph.addNode(row[0]);
-                graph.addNode(row[1]);
-                graph.addEdge(row[0], row[1], Double.parseDouble(row[2]));
+                String[] data = line.split(",");
+                String place1 = data[0];
+                String place2 = data[1];
+                double distance = Double.parseDouble(data[2]);
+                
+                graph.addNode(place1);
+                graph.addNode(place2);
+                graph.addEdge(place1, place2, distance);
             }
 
-            reader.close();
             @SuppressWarnings("unchecked")
             LinkedList<Edge<String, Double>> minimumSpanningForest = (LinkedList<Edge<String, Double>>) minimumSpanningForest(graph);
             forestToString(minimumSpanningForest);
-            System.out.println("Numero di nodi: " + graph.numNodes());
+            System.out.println("Nodes number: " + graph.numNodes());
         }
         
         catch(Exception e){

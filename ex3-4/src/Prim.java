@@ -1,13 +1,17 @@
-import java.util.*;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Comparator;
+import java.util.Collection;
+import java.util.NoSuchElementException;
 import java.text.DecimalFormat;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
 
 public class Prim{
     private static <V, L extends Number> void addAdjacent(Graph<V, L> graph, PriorityQueue<Edge<V, L>> priorityQueue, V vertex, HashSet<V> visitedNodes){
         for(V neighbour : graph.getNeighbours(vertex)){
             if(!visitedNodes.contains(neighbour)){
-                L label = graph.getLabel(vertex, neighbour);
-                priorityQueue.push(new Edge<>(vertex, neighbour, label));
+                priorityQueue.push(new Edge<>(vertex, neighbour, graph.getLabel(vertex, neighbour)));
             }
         }
     }
@@ -23,25 +27,22 @@ public class Prim{
             if(!visitedNodes.contains(startNode)){
                 visitedNodes.add(startNode);
                 addAdjacent(graph, priorityQueue, startNode, visitedNodes);
-                LinkedList<Edge<V, L>> minTree = new LinkedList<>();
 
-            while (!priorityQueue.empty()) {
-                Edge<V, L> edge = priorityQueue.top();
-                priorityQueue.pop();
-                V nextNode = edge.getEnd();
-                
-                if(!visitedNodes.contains(nextNode)){
-                    visitedNodes.add(nextNode);
-                    minTree.add(edge);
-                    addAdjacent(graph, priorityQueue, nextNode, visitedNodes);
+                while (!priorityQueue.empty()) {
+                    Edge<V, L> edge = priorityQueue.top();
+                    priorityQueue.pop();
+                    V nextNode = edge.getEnd();
+                    
+                    if(!visitedNodes.contains(nextNode)){
+                        visitedNodes.add(nextNode);
+                        minimumSpanningForest.add(edge);
+                        addAdjacent(graph, priorityQueue, nextNode, visitedNodes);
+                    }
                 }
             }
+        } 
 
-            minimumSpanningForest.addAll(minTree);
-          }
-      } 
-
-      return minimumSpanningForest;
+        return minimumSpanningForest;
     }
 
     public static void forestToString(LinkedList<Edge<String, Double>> forest) {
@@ -60,10 +61,8 @@ public class Prim{
         });
         
         double totalWeight = forest.stream().mapToDouble(Edge::getLabel).sum();
-
-        DecimalFormat formatter = new DecimalFormat("#.######");
         System.out.println("Total edges: " + forest.size());
-        System.out.println("Total edges' weight: " + formatter.format(totalWeight / 1000) + " km");
+        System.out.println("Total edges' weight: " + new DecimalFormat("#.######").format(totalWeight / 1000) + " km");
     }
       
     public static void main(String[] args) {
@@ -73,7 +72,7 @@ public class Prim{
         // su standard error si possono scrivere ulteriori informazioni, come il numero di nodi e archi nella foresta calcolata,
         // o il peso totale della foresta
         if(args.length < 1){
-            System.err.println("Specificare il percorso del file come argomento in input.");
+            System.err.println("Specify the file path as an input argument.");
             System.exit(1);
         }
 
@@ -98,7 +97,7 @@ public class Prim{
         }
         
         catch(Exception e){
-            System.err.println("Errore del file in lettura: " + e.getMessage());
+            System.err.println("File read error: " + e.getMessage());
         }
     }  
 }

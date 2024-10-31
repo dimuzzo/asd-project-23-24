@@ -1,4 +1,7 @@
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.LinkedList;
 import java.util.Collection;
 
 public class Graph<V, L> implements AbstractGraph<V, L> {
@@ -27,10 +30,8 @@ public class Graph<V, L> implements AbstractGraph<V, L> {
         if (containsNode(a)) {
             return false;
         }
-        else{
-            this.adjacentArch.put(a, new LinkedList<>());
-            return true;
-        }
+        adjacentArch.put(a, new LinkedList<>());
+        return true;
     }
 
     @Override
@@ -41,19 +42,16 @@ public class Graph<V, L> implements AbstractGraph<V, L> {
         if(!labelled){
             l = null;
         }
-        if(directed){
-            this.adjacentArch.get(a).add(new Edge<>(a, b, l));
-        }
-        else{
-            this.adjacentArch.get(a).add(new Edge<>(a, b, l));
-            this.adjacentArch.get(b).add(new Edge<>(b, a, l));
+        adjacentArch.get(a).add(new Edge<>(a, b, l));
+        if(!directed){
+            adjacentArch.get(b).add(new Edge<>(b, a, l));
         }
         return true;
     }
 
     @Override
     public boolean containsNode(V a){
-        return this.adjacentArch.containsKey(a);
+        return adjacentArch.containsKey(a);
     }
 
     @Override
@@ -66,13 +64,11 @@ public class Graph<V, L> implements AbstractGraph<V, L> {
         if(!containsNode(a)){
             return false;
         }
-        else{
-            for(V node : getNodes()){
-                removeEdge(node, a);
-            }
-            this.adjacentArch.remove(a);
-            return true;
+        for(V node : getNodes()){
+            removeEdge(node, a);
         }
+        adjacentArch.remove(a);
+        return true;
     }
 
     @Override
@@ -82,10 +78,10 @@ public class Graph<V, L> implements AbstractGraph<V, L> {
         }
         else{
             Edge<V, L> edge = findEdge(a, b);
-            this.adjacentArch.get(a).remove(edge);
+            adjacentArch.get(a).remove(edge);
             if(!directed){
                 Edge<V, L> revEdge = findEdge(b, a);
-                this.adjacentArch.get(b).remove(revEdge);
+                adjacentArch.get(b).remove(revEdge);
             }
             return true;
         }
@@ -93,30 +89,27 @@ public class Graph<V, L> implements AbstractGraph<V, L> {
 
     @Override
     public int numNodes(){
-        return this.adjacentArch.size();
+        return adjacentArch.size();
     }
 
     @Override
     public int numEdges(){
         int edgeCount = 0;
-        for(V key : this.adjacentArch.keySet()){
-            edgeCount += getNeighbours(key).size();
+        for(V neighbourNode : adjacentArch.keySet()){
+            edgeCount += getNeighbours(neighbourNode).size();
         }
-        if(!directed){
-            edgeCount /= 2;
-        }
-        return edgeCount;
+        return directed ? edgeCount : (edgeCount / 2);
     }
 
     @Override
     public Collection<V> getNodes(){
-        return new HashSet<>(this.adjacentArch.keySet());
+        return new HashSet<>(adjacentArch.keySet());
     }
 
     @Override
     public HashSet<Edge<V, L>> getEdges(){
         HashSet<Edge<V, L>> edges = new HashSet<>();
-        for(List<Edge<V, L>> edgeList : this.adjacentArch.values()){
+        for(List<Edge<V, L>> edgeList : adjacentArch.values()){
             edges.addAll(edgeList);
         }
         return edges;
@@ -124,12 +117,11 @@ public class Graph<V, L> implements AbstractGraph<V, L> {
 
     @Override
     public Collection<V> getNeighbours(V a){
-        if(!containsNode(a)){
-            return new LinkedList<>();
-        }
         LinkedList<V> neighbours = new LinkedList<>();
-        for(Edge<V, L> edge : this.adjacentArch.get(a)){
-            neighbours.add(edge.getEnd());
+        if(containsNode(a)){
+            for(Edge<V, L> edge : adjacentArch.get(a)){
+                neighbours.add(edge.getEnd());
+            }
         }
         return neighbours;
     }
@@ -137,22 +129,12 @@ public class Graph<V, L> implements AbstractGraph<V, L> {
     @Override
     public L getLabel(V a, V b){
         Edge<V, L> edge = findEdge(a, b);
-        if(edge == null){
-            return null;
-        }
-        return edge.getLabel();
-    }
-
-    public void printEdge(){
-        HashSet<Edge<V, L>> edges = getEdges();
-        for(Edge<V, L> k : edges){
-            System.out.println(k.getStart().toString() + " to " + k.getEnd().toString() + " at distance " + k.getLabel().toString());
-        }
+        return (edge != null) ? edge.getLabel() : null;
     }
 
     private Edge<V, L> findEdge(V a, V b){
-        if(containsNode(a) && containsNode(b)){
-            for(Edge<V, L> edge : this.adjacentArch.get(a)){
+        if(containsNode(a)){
+            for(Edge<V, L> edge : adjacentArch.get(a)){
                 if(edge.getEnd().equals(b)){
                     return edge;
                 }

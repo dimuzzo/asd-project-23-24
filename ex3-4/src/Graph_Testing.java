@@ -1,18 +1,15 @@
-import java.util.Comparator;
-import java.util.NoSuchElementException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertArrayEquals;
 import org.junit.Before;
 import org.junit.Test;
 
 public class Graph_Testing{
     private Integer i1, i2, i3, i4;
-    Graph<Integer, Integer> g1;
-    Graph<Integer, Integer> g2;
-    Graph<Integer, Integer> g3;
-    Graph<Integer, Integer> g4;
+    private Graph<Integer, Integer> g1;
+    private Graph<Integer, Integer> g2;
+    private Graph<Integer, Integer> g3;
+    private Graph<Integer, Integer> g4;
 
     @Before
     public void createGraph(){
@@ -26,7 +23,7 @@ public class Graph_Testing{
         g4 = new Graph<>(true, true);
     }
 
-    // Test per i grafi orientati
+    // Test for directed graphs
     @Test
     public void testIsDirected_g1(){
         assertFalse(g1.isDirected());
@@ -47,7 +44,7 @@ public class Graph_Testing{
         assertTrue(g4.isDirected());
     }
 
-    // Test per i grafi etichettati
+    // Test for labelled graphs
     @Test
     public void testIsLabelled_g1(){
         assertFalse(g1.isLabelled());
@@ -68,15 +65,15 @@ public class Graph_Testing{
         assertTrue(g4.isLabelled());
     }
 
-    // Test per aggiunta di nodi
+    // Test for addition of nodes
     @Test
     public void testAddNode_g1(){
         assertTrue(g1.addNode(i1));
         assertTrue(g1.addNode(i2));
         assertTrue(g1.addNode(i3));
         assertTrue(g1.addNode(i4));
-        assertFalse(g1.addNode(i1)); // Il nodo esiste già
-        assertFalse(g1.addNode(i3)); // Il nodo esiste già
+        assertFalse(g1.addNode(i1)); 
+        assertFalse(g1.addNode(i3));
     }
 
     @Test
@@ -85,8 +82,8 @@ public class Graph_Testing{
         assertTrue(g2.addNode(i2));
         assertTrue(g2.addNode(i3));
         assertTrue(g2.addNode(i4));
-        assertFalse(g2.addNode(i2)); // Il nodo esiste già
-        assertFalse(g2.addNode(i4)); // Il nodo esiste già
+        assertFalse(g2.addNode(i2));
+        assertFalse(g2.addNode(i4));
     }
 
     @Test
@@ -95,8 +92,8 @@ public class Graph_Testing{
         assertTrue(g3.addNode(45));
         assertTrue(g3.addNode(23));
         assertTrue(g3.addNode(104));
-        assertFalse(g3.addNode(104)); // Il nodo esiste già
-        assertFalse(g3.addNode(45)); // Il nodo esiste già
+        assertFalse(g3.addNode(104));
+        assertFalse(g3.addNode(45));
     }
 
     @Test
@@ -105,11 +102,11 @@ public class Graph_Testing{
         assertTrue(g4.addNode(88));
         assertTrue(g4.addNode(66));
         assertTrue(g4.addNode(33));
-        assertFalse(g4.addNode(88)); // Il nodo esiste già
-        assertFalse(g4.addNode(99)); // Il nodo esiste già
+        assertFalse(g4.addNode(88));
+        assertFalse(g4.addNode(99));
     }
 
-    // Test per l'aggiunta di archi
+    // Test for addition of edges
     @Test
     public void testAddEdge_g1(){
         g1.addNode(0);
@@ -178,7 +175,7 @@ public class Graph_Testing{
         assertFalse(g4.addEdge(1, 4, 5));
     }
 
-    // Test per la rimozione di nodi
+    // Test for removal nodes
     @Test
     public void testRemoveNode_g1(){
         g1.addNode(i1);
@@ -231,7 +228,7 @@ public class Graph_Testing{
         assertFalse(g4.removeNode(i3));
     }
 
-    // Test per la rimozione di archi
+    // Test for removal edges
     @Test
     public void testRemoveEdge_g1(){
         g1.addNode(0);
@@ -316,7 +313,7 @@ public class Graph_Testing{
         assertFalse(g4.removeEdge(1, 4));
     }
 
-    // Test per calcolo numero di nodi
+    // Test for calculating the number of nodes
     @Test
     public void testNumNodes_g1(){
         g1.addNode(1);
@@ -353,7 +350,7 @@ public class Graph_Testing{
         assertEquals(4, g4.numNodes());
     }
 
-    // Test per calcolo numero di archi
+    // Test for calculating the number of edges
     @Test
     public void testNumEdges_g1(){
         g1.addNode(1);
@@ -402,7 +399,7 @@ public class Graph_Testing{
         assertEquals(3, g4.numEdges());
     }
 
-    // Test per ottenere i nodi
+    // Test to get the nodes
     @Test
     public void testGetNodes_g1(){
         g1.addNode(i1);
@@ -447,7 +444,7 @@ public class Graph_Testing{
         assertFalse(g4.getNodes().contains(104));
     }
 
-    // Test per ottenere gli archi
+    // Test to get the edges
     @Test
     public void testGetEdges_g1(){
         g1.addNode(1);
@@ -496,7 +493,7 @@ public class Graph_Testing{
         assertEquals(3, g4.getEdges().size());
     }
 
-    // Test per ottenere gli archi adiacenti
+    // Test to get the neighbours edges
     @Test
     public void testGetNeighbours_g1(){
         g1.addNode(1);
@@ -557,7 +554,7 @@ public class Graph_Testing{
         assertFalse(g4.getNeighbours(1).contains(77));    
     }
 
-    // Test per ottenere le etichette (solo per grafi etichettati)
+    // Test to get the labels
     @Test
     public void testGetLabel_g2(){
         g2.addNode(1);

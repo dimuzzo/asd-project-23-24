@@ -1,10 +1,10 @@
-import java.util.*;
-import java.io.*;
+import java.util.HashMap;
 import java.util.Comparator;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 public class PriorityQueue<E> implements AbstractQueue<E>{
-    private List<E> heap;
+    private ArrayList<E> heap;
     private Comparator<E> comparator;
     private HashMap<E, Integer> indexMap;
 
@@ -23,9 +23,9 @@ public class PriorityQueue<E> implements AbstractQueue<E>{
         return false;
       }
       heap.add(e);
-      int current_index = heap.size() - 1;
-      indexMap.put(e, current_index);
-      heapifyUp(current_index);
+      int currentIndex = heap.size() - 1;
+      indexMap.put(e, currentIndex);
+      heapifyUp(currentIndex);
       return true;
     }
 
@@ -44,10 +44,10 @@ public class PriorityQueue<E> implements AbstractQueue<E>{
       if (empty()){ 
         throw new NoSuchElementException("Pop: priority queue is empty.");
       }
-      int last_index = heap.size() - 1;
-      swapAndMap(0, last_index);
-      indexMap.remove(heap.get(last_index));
-      heap.remove(last_index);
+      int lastIndex = heap.size() - 1;
+      swapAndMap(0, lastIndex);
+      indexMap.remove(heap.get(lastIndex));
+      heap.remove(lastIndex);
       if(!empty()){
         heapifyDown(0);
       }
@@ -57,58 +57,58 @@ public class PriorityQueue<E> implements AbstractQueue<E>{
       if(!contains(e)){
         return false;
       }
-      int index_to_remove = indexMap.get(e);
-      int last_index = heap.size() - 1;
-      if(index_to_remove != last_index){
-        swapAndMap(index_to_remove, last_index);
+      int indexToRemove = indexMap.get(e);
+      int lastIndex = heap.size() - 1;
+      if(indexToRemove != lastIndex){
+        swapAndMap(indexToRemove, lastIndex);
       }
       indexMap.remove(e);
-      heap.remove(last_index);
-      if(!empty() && (index_to_remove < heap.size())){
-        heapifyUp(index_to_remove);
-        heapifyDown(index_to_remove);
+      heap.remove(lastIndex);
+      if(!empty() && (indexToRemove < heap.size())){
+        heapifyUp(indexToRemove);
+        heapifyDown(indexToRemove);
       }
       return true;
     }
 
-    public void heapifyUp(int current_index) {
-      while (current_index > 0) {
-          int parent_index = (current_index - 1) / 2;
-          if (compare(heap.get(current_index), heap.get(parent_index)) < 0){
-            swapAndMap(current_index, parent_index);
-            current_index = parent_index;
+    private void heapifyUp(int index) {
+      while (index > 0) {
+          int parentIndex = (index - 1) / 2;
+          if (compareIndex(index, parentIndex) < 0){
+            swapAndMap(index, parentIndex);
+            index = parentIndex;
           }
           else break;
       }
     }
 
-    public void heapifyDown(int current_index) {
-      int smallest_index = current_index;
-      int leftchild_index = 2 * current_index + 1;
-      int rightchild_index = 2 * current_index + 2;
+    private void heapifyDown(int index) {
+      int smallestIndex = index;
+      int leftChildIndex = 2 * index + 1;
+      int rightChildIndex = 2 * index + 2;
     
-      if (leftchild_index < heap.size() && compare(heap.get(leftchild_index), heap.get(smallest_index)) < 0){
-          smallest_index = leftchild_index;
+      if (leftChildIndex < heap.size() && compareIndex(leftChildIndex, smallestIndex) < 0){
+          smallestIndex = leftChildIndex;
       }
-      if (rightchild_index < heap.size() && compare(heap.get(rightchild_index), heap.get(smallest_index)) < 0){
-          smallest_index = rightchild_index;
+      if (rightChildIndex < heap.size() && compareIndex(rightChildIndex, smallestIndex) < 0){
+          smallestIndex = rightChildIndex;
       }
-      if (smallest_index != current_index) {
-          swapAndMap(current_index, smallest_index);
-          heapifyDown(smallest_index);
+      if (smallestIndex != index) {
+          swapAndMap(index, smallestIndex);
+          heapifyDown(smallestIndex);
       }
     }
 
-    public void swapAndMap(int index_i, int index_j) {
-        E temp_index = heap.get(index_i);
-        heap.set(index_i, heap.get(index_j));
-        heap.set(index_j, temp_index);
-        indexMap.put(heap.get(index_i), index_i);
-        indexMap.put(heap.get(index_j), index_j);
+    private void swapAndMap(int index1, int index2) {
+        E tempIndex = heap.get(index1);
+        heap.set(index1, heap.get(index2));
+        heap.set(index2, tempIndex);
+        indexMap.put(heap.get(index1), index1);
+        indexMap.put(heap.get(index2), index2);
     }
 
-    public int compare(E a, E b) {
-        return comparator.compare(a, b);
+    private int compareIndex(int index1, int index2) {
+        return comparator.compare(heap.get(index1), heap.get(index2));
     } 
 
     @Override

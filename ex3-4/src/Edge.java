@@ -1,7 +1,7 @@
 public class Edge<V, L> implements AbstractEdge<V, L> {
-    private V start; // vertice iniziale
-    private V end;   // vertice finale
-    private L label; // etichetta per indicare l'arco
+    private V start; // Starting node
+    private V end;   // Ending node
+    private L label; // Label for the edge between the two nodes
 
     public Edge(V start, V end, L label) {
         this.start = start;

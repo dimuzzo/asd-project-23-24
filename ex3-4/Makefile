@@ -34,7 +34,7 @@ $(BIN_DIR)/%.class: $(SRC_DIR)/%.java | $(BIN_DIR)
 	$(JAVAC) $(JAVAC_FLAGS) $<
 
 # Regola per l'esecuzione di PriorityQueue_Testing
-runPriorityQueue: $(CLASSES)
+runPQ: $(CLASSES)
 	$(JAVA) -cp $(LIB_DIR)/*:$(BIN_DIR) $(MAIN_CLASS_PRIORITYQUEUE)
 
 # Regola per l'esecuzione di Graph_Testing
@@ -57,6 +57,3 @@ test: $(CLASSES)
 # Regola per la pulizia dei file compilati
 clean:
 	rm -rf $(BIN_DIR)/*.class
-
-# Utilizzo target phony per garantire l'esecuzione di ogni target
-.PHONY: all runPriorityQueue runGraph runEdge runPrim test clean

@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include "mergesort_quicksort.h"
-#define MAX_LENGTH 1000 // Maximum string length for each field
-#define MAX_NUM_DATA 2000000 // Maximum number of data to read from the file
 
 // Merge function for Merge Sort
 void merge(void *base, size_t mid, size_t nitems, size_t size, int (*compar)(const void *, const void *)) {

@@ -1,3 +1,4 @@
+// Libraries declaration
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -46,37 +47,52 @@ void merge_sort(void *base, size_t nitems, size_t size, int (*compar)(const void
     merge(base, mid, nitems, size, compar);
 }
 
-// Partition function for Quick Sort
-size_t partition(void *base, size_t nitems, size_t size, int (*compar)(const void *, const void *)) {
-    void *pivot = (char *)base + (nitems - 1) * size;
-    size_t i = 0;
+// 3-Way Partition function for Quick Sort
+void three_way_partition(void *base, size_t nitems, size_t size, int (*compar)(const void *, const void *), size_t *lt, size_t *gt) {
+    void *pivot = malloc(size);
+    if (!pivot) return;
 
-    for (size_t j = 0; j < nitems - 1; j++) {
-        if (compar((char *)base + j * size, pivot) <= 0) {
+    memcpy(pivot, base, size); // Select the first element as the pivot
+    size_t i = 0, low = 0, high = nitems - 1;
 
+    while (i <= high) {
+        int cmp = compar((char *)base + i * size, pivot);
+        if (cmp < 0) {
+            // Swap base[i] and base[low]
             void *temp = malloc(size);
-            memcpy(temp, (char *)base + i * size, size);
-            memcpy((char *)base + i * size, (char *)base + j * size, size);
-            memcpy((char *)base + j * size, temp, size);
+            memcpy(temp, (char *)base + low * size, size);
+            memcpy((char *)base + low * size, (char *)base + i * size, size);
+            memcpy((char *)base + i * size, temp, size);
             free(temp);
+
+            low++;
+            i++;
+        } else if (cmp > 0) {
+            // Swap base[i] and base[high]
+            void *temp = malloc(size);
+            memcpy(temp, (char *)base + high * size, size);
+            memcpy((char *)base + high * size, (char *)base + i * size, size);
+            memcpy((char *)base + i * size, temp, size);
+            free(temp);
+
+            high--;
+        } else {
             i++;
         }
     }
 
-    void *temp = malloc(size);
-    memcpy(temp, (char *)base + i * size, size);
-    memcpy((char *)base + i * size, pivot, size);
-    memcpy(pivot, temp, size);
-    free(temp);
-
-    return i;
+    *lt = low;
+    *gt = high;
+    free(pivot);
 }
 
-// Quick Sort implementation
+// Quick Sort implementation with 3-Way Partitioning
 void quick_sort(void *base, size_t nitems, size_t size, int (*compar)(const void *, const void *)) {
-    if (nitems < 2) return;
+    if (nitems <= 1 || base == NULL) return;  // No sorting needed
 
-    size_t pivot_index = partition(base, nitems, size, compar);
-    quick_sort(base, pivot_index, size, compar);
-    quick_sort((char *)base + (pivot_index + 1) * size, nitems - pivot_index - 1, size, compar);
+    size_t lt, gt;
+    three_way_partition(base, nitems, size, compar, &lt, &gt);
+
+    quick_sort(base, lt, size, compar); // Sort elements less than pivot
+    quick_sort((char *)base + (gt + 1) * size, nitems - gt - 1, size, compar); // Sort elements greater than pivot
 }

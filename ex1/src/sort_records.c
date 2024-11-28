@@ -6,14 +6,14 @@
 #include "mergesort_quicksort.h"
 
 #define MAX_LENGTH 1000  // Maximum string length for each field
-#define MAX_NUM_DATA 1000  // Maximum number of records to read
+#define TOTAL_RECORDS 20000000  // Total number of records
 
 // Record structure
 struct data_rec {
     int id;
-    char field1[1000];  
+    char field1[350];  
     int field2;
-    float field3;
+    double field3;
 };
 
 // Comparison functions for the different fields of the record
@@ -31,7 +31,7 @@ int compare_data_int(const void *a, const void *b) {
     else return 0;
 }
 
-int compare_data_float(const void *a, const void *b) {
+int compare_data_fp(const void *a, const void *b) {
     struct data_rec *Data_A = (struct data_rec *)a;
     struct data_rec *Data_B = (struct data_rec *)b;
     if (Data_A->field3 > Data_B->field3) return 1;
@@ -39,89 +39,60 @@ int compare_data_float(const void *a, const void *b) {
     else return 0;
 }
 
-// Function to print the number of records sorted
-void print_sorted_count(size_t count) {
-    printf("Total sorted records: %zu.\n", count);
-}
-
-// Function to sort records in a file
+// Main sorting function
 void sort_records(FILE *infile, FILE *outfile, size_t field, size_t algo) {
-    struct data_rec *records = malloc(MAX_NUM_DATA * sizeof(struct data_rec));
-    char line[MAX_LENGTH];
+    struct data_rec *records = malloc(TOTAL_RECORDS * sizeof(struct data_rec));
+    char line[MAX_LENGTH * 4];
     size_t data_count = 0;
-    size_t total_sorted = 0;
 
     if (!records) {
-        printf("Memory allocation failed.\n");
+        printf("Memory allocation failed. Ensure sufficient memory is available.\n");
         return;
     }
 
-    // Determine and print sorting algorithm and field
-    const char *algo_name = (algo == 1) ? "Merge Sort" : "Quick Sort";
-    const char *field_name = NULL;
-    
-    if (field == 1) field_name = "field1 - String";
-    else if (field == 2) field_name = "field2 - Integer";
-    else if (field == 3) field_name = "field3 - Float";
-    
-    printf("Sorting using %s on %s.\n", algo_name, field_name);
-
-    // Records are read, sorted and wrote in chunks to minimize memory usage
+    printf("Reading records into memory...\n");
     clock_t start_time = clock();
-    while (fgets(line, sizeof(line), infile) != NULL) {
-        if (data_count < MAX_NUM_DATA) {
-            sscanf(line, "%d,%999[^,],%d,%f", &records[data_count].id, records[data_count].field1, &records[data_count].field2, &records[data_count].field3);
-            data_count++;
-        }
-        
-        // Sort when the chunk is full
-        if (data_count == MAX_NUM_DATA) {
-            // Select the correct comparator based on the field
-            int (*compar)(const void *, const void *);
-            if (field == 1) compar = compare_data_char;
-            else if (field == 2) compar = compare_data_int;
-            else compar = compare_data_float;
 
-            // Choose the sorting algorithm
-            if (algo == 1) {
-                merge_sort(records, data_count, sizeof(struct data_rec), compar);
-            } else {
-                quick_sort(records, data_count, sizeof(struct data_rec), compar);
-            }
-
-            // Write the sorted chunk just analyzed to file
-            for (size_t i = 0; i < data_count; i++) {
-                fprintf(outfile, "%d,%s,%d,%f\n", records[i].id, records[i].field1, records[i].field2, records[i].field3);
-            }
-
-            total_sorted += data_count;
-            data_count = 0;  // Reset to have enough space for the next chunk
-        }
+    // Load all records into memory
+    while (fgets(line, sizeof(line), infile) != NULL && data_count < TOTAL_RECORDS) {
+        sscanf(line, "%d,%999[^,],%d,%lf", &records[data_count].id, records[data_count].field1, &records[data_count].field2, &records[data_count].field3);
+        data_count++;
     }
 
-    // If there are any remaining records to sort (less than MAX_NUM_DATA)
-    if (data_count > 0) {
-        int (*compar)(const void *, const void *);
-        if (field == 1) compar = compare_data_char;
-        else if (field == 2) compar = compare_data_int;
-        else compar = compare_data_float;
-
-        if (algo == 1) {
-            merge_sort(records, data_count, sizeof(struct data_rec), compar);
-        } else {
-            quick_sort(records, data_count, sizeof(struct data_rec), compar);
-        }
-
-        for (size_t i = 0; i < data_count; i++) {
-            fprintf(outfile, "%d,%s,%d,%f\n", records[i].id, records[i].field1, records[i].field2, records[i].field3);
-        }
-
-        total_sorted += data_count;
+    if (data_count == 0) {
+        printf("No records to sort.\n");
+        free(records);
+        return;
     }
-    
-    print_sorted_count(total_sorted);  // Print the count of sorted records
+
+    printf("Sorting %zu records...\n", data_count);
+
+    // Select the comparison function
+    int (*compar)(const void *, const void *);
+    if (field == 1) compar = compare_data_char;
+    else if (field == 2) compar = compare_data_int;
+    else compar = compare_data_fp;
+
+    // Sort the records
+    if (algo == 1) {
+        merge_sort(records, data_count, sizeof(struct data_rec), compar);
+    } else {
+        quick_sort(records, data_count, sizeof(struct data_rec), compar);
+    }
+
+    clock_t sort_time = clock();
+    printf("Sorting completed in %f seconds.\n", (double)(sort_time - start_time) / CLOCKS_PER_SEC);
+
+    // Write sorted records to the output file
+    printf("Writing sorted records to the output file...\n");
+    for (size_t i = 0; i < data_count; i++) {
+        fprintf(outfile, "%d,%s,%d,%lf\n", records[i].id, records[i].field1, records[i].field2, records[i].field3);
+    }
+
     clock_t end_time = clock();
-    printf("Sorting took %f seconds\n", (double)(end_time - start_time) / CLOCKS_PER_SEC);
+    printf("Writing completed in %f seconds.\n", (double)(end_time - sort_time) / CLOCKS_PER_SEC);
+    printf("Total time: %f seconds.\n", (double)(end_time - start_time) / CLOCKS_PER_SEC);
+
     free(records);
 }
 
@@ -137,13 +108,13 @@ int main(int argc, char *argv[]) {
     int algo = atoi(argv[4]);
 
     FILE *infile = fopen(input_file, "r");
-    if (infile == NULL) {
+    if (!infile) {
         printf("Error opening input file.\n");
         return 1;
     }
 
     FILE *outfile = fopen(output_file, "w");
-    if (outfile == NULL) {
+    if (!outfile) {
         printf("Error opening output file.\n");
         fclose(infile);
         return 1;

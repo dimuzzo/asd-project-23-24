@@ -1,6 +1,11 @@
+# Tipo di file da ignorare durante i commit su GitLab
 *.csv
+*.txt
+*.o
+*.out
+*.class
 
-#PER PROGETTO C
-OrderedArray_C/src/unity*
-OrderedArray_C/bin/
-OrderedArray_C/build/
+# Tipo di cartelle da ignorare durante i commit su GitLab
+bin/
+obj/
+inp/

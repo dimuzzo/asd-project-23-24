@@ -41,23 +41,23 @@ public class PriorityQueue_Testing{
         this.pq_String = new PriorityQueue<String>(new StringComparator());
     }
 
-    // Test per gli Integer
+    // Tests for Integer Priority Queue
     @Test
     public void testEmptyQueue_Int() {
-        assertTrue(pq_Int.empty());  // Verifica che la coda inizialmente sia vuota
+        assertTrue(pq_Int.empty());  
     }
 
     @Test
     public void testPush_Int() {
-        assertTrue(pq_Int.push(i1));  // Inserisce un elemento
-        assertFalse(pq_Int.empty());  // Ora la coda non è più vuota
-        assertEquals(i1, pq_Int.top()); // i1 è l'unico elemento ed è anche quello minimo
+        assertTrue(pq_Int.push(i1));  
+        assertFalse(pq_Int.empty()); 
+        assertEquals(i1, pq_Int.top()); 
     }
 
     @Test
     public void testPushDuplicate_Int() {
         assertTrue(pq_Int.push(i2));
-        assertFalse(pq_Int.push(i2));  // Non permette duplicati
+        assertFalse(pq_Int.push(i2));  
     }
 
     @Test
@@ -65,14 +65,14 @@ public class PriorityQueue_Testing{
         pq_Int.push(i1);
         pq_Int.push(i2);
         pq_Int.push(i3);
-        assertEquals(i3, pq_Int.top());  // i3 è l'elemento minimo
+        assertEquals(i3, pq_Int.top());  
         assertTrue(pq_Int.top() == i3);
     }
 
     @Test
     (expected = NoSuchElementException.class)
     public void testTopOnEmptyQueue_Int() {
-        pq_Int.top();  // Genera eccezione se la coda è vuota
+        pq_Int.top();  
     }
 
     @Test
@@ -87,7 +87,7 @@ public class PriorityQueue_Testing{
     @Test
     (expected = NoSuchElementException.class)
     public void testPopOnEmptyQueue_Int() {
-        pq_Int.pop();  // Genera eccezione se si tenta di effetuare pop su coda vuota
+        pq_Int.pop();  
     }
 
     @Test
@@ -95,7 +95,7 @@ public class PriorityQueue_Testing{
         pq_Int.push(i1);
         pq_Int.push(i2);
         assertTrue(pq_Int.contains(i1));
-        assertFalse(pq_Int.contains(i3));  // i3 non è stato inserito
+        assertFalse(pq_Int.contains(i3)); 
     }
 
     @Test
@@ -103,25 +103,25 @@ public class PriorityQueue_Testing{
         pq_Int.push(i1);
         pq_Int.push(i2);
         assertTrue(pq_Int.remove(i1));
-        assertFalse(pq_Int.contains(i1));  // i1 è stato rimosso
+        assertFalse(pq_Int.contains(i1));  
     }
 
-    // Test per gli String
+    // Tests for String Priority Queue
     @Test
     public void testEmptyQueue_String() {
-        assertTrue(pq_String.empty());  // Verifica che la coda inizialmente sia vuota
+        assertTrue(pq_String.empty());  
     }
 
     @Test
     public void testPush_String() {
-        assertTrue(pq_String.push(s1));  // Inserisce un elemento
-        assertFalse(pq_String.empty());  // Ora la coda non è più vuota
+        assertTrue(pq_String.push(s1));  
+        assertFalse(pq_String.empty());  
     }
 
     @Test
     public void testPushDuplicate_String() {
         assertTrue(pq_String.push(s1));
-        assertFalse(pq_String.push(s1));  // Non permette duplicati
+        assertFalse(pq_String.push(s1));  
     }
 
     @Test
@@ -129,13 +129,13 @@ public class PriorityQueue_Testing{
         pq_String.push(s1);
         pq_String.push(s2);
         pq_String.push(s3);
-        assertEquals(s1, pq_String.top());  // s1 è il minimo alfabetico
+        assertEquals(s1, pq_String.top()); 
     }
 
     @Test
     (expected = NoSuchElementException.class)
     public void testTopOnEmptyQueue_String() {
-        pq_String.top();  // Genera eccezione se la coda è vuota
+        pq_String.top();  
     }
 
     @Test
@@ -150,7 +150,7 @@ public class PriorityQueue_Testing{
     @Test
     (expected = NoSuchElementException.class)
     public void testPopOnEmptyQueue_String() {
-        pq_String.pop();  // Genera eccezione se si tenta di effetuare pop su coda vuota
+        pq_String.pop();  
     }
 
     @Test
@@ -158,7 +158,7 @@ public class PriorityQueue_Testing{
         pq_String.push(s1);
         pq_String.push(s2);
         assertTrue(pq_String.contains(s1));
-        assertFalse(pq_String.contains(s3));  // s3 non è stato inserito
+        assertFalse(pq_String.contains(s3));  
     }
 
     @Test
@@ -166,6 +166,6 @@ public class PriorityQueue_Testing{
         pq_String.push(s1);
         pq_String.push(s2);
         assertTrue(pq_String.remove(s1));
-        assertFalse(pq_String.contains(s1));  // s1 è stato rimosso
+        assertFalse(pq_String.contains(s1));
     }
 }

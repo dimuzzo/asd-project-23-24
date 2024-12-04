@@ -5,19 +5,19 @@ import java.util.LinkedList;
 import java.util.Collection;
 
 public class Graph<V, L> implements AbstractGraph<V, L> {
-    private boolean directed;
-    private boolean labelled;
-    private HashMap<V, LinkedList<Edge<V, L>>> adjacentArch;
+    private boolean directed; 
+    private boolean labelled; 
+    private HashMap<V, LinkedList<Edge<V, L>>> adjacentEdge; // Stores adjacency lists for nodes
 
     public Graph(boolean directed, boolean labelled) {
-        this.directed = directed;
+        this.directed = directed; 
         this.labelled = labelled;
-        this.adjacentArch = new HashMap<>();
+        this.adjacentEdge = new HashMap<>(); // Initializes an empty adjacency list
     }
 
     @Override
     public boolean isDirected() {
-        return directed;
+        return directed; 
     }
 
     @Override
@@ -27,119 +27,119 @@ public class Graph<V, L> implements AbstractGraph<V, L> {
 
     @Override
     public boolean addNode(V a) {
-        if (containsNode(a)) {
-            return false;
-        }
-        adjacentArch.put(a, new LinkedList<>());
+        if (containsNode(a)) return false; // Node already exists
+        
+        adjacentEdge.put(a, new LinkedList<>()); // Adds a new node with an empty adjacency list
         return true;
     }
 
     @Override
-    public boolean addEdge(V a, V b, L l){
-        if(containsEdge(a, b)){
-            return false;
-        }
-        if(!labelled){
-            l = null;
-        }
-        adjacentArch.get(a).add(new Edge<>(a, b, l));
-        if(!directed){
-            adjacentArch.get(b).add(new Edge<>(b, a, l));
+    public boolean addEdge(V a, V b, L l) {
+        if (containsEdge(a, b)) return false; // Edge already exists
+
+        if (!labelled) l = null; // If the graph is not labelled, ignore the provided label
+
+        // Add edge from node `a` to node `b`
+        adjacentEdge.get(a).add(new Edge<>(a, b, l));
+        if (!directed) {
+            // If the graph is undirected, also add the reverse edge
+            adjacentEdge.get(b).add(new Edge<>(b, a, l));
         }
         return true;
     }
 
     @Override
-    public boolean containsNode(V a){
-        return adjacentArch.containsKey(a);
+    public boolean containsNode(V a) {
+        return adjacentEdge.containsKey(a);
     }
 
     @Override
-    public boolean containsEdge(V a, V b){
-        return findEdge(a, b) != null;
+    public boolean containsEdge(V a, V b) {
+        return findEdge(a, b) != null; 
     }
 
     @Override
-    public boolean removeNode(V a){
-        if(!containsNode(a)){
-            return false;
-        }
-        for(V node : getNodes()){
+    public boolean removeNode(V a) {
+        if (!containsNode(a)) return false; // Node doesn't exist
+
+        // Remove all edges connected to the node
+        for (V node : getNodes()) {
             removeEdge(node, a);
         }
-        adjacentArch.remove(a);
+        adjacentEdge.remove(a); // Remove the node itself
         return true;
     }
 
     @Override
-    public boolean removeEdge(V a, V b){
-        if(!containsEdge(a, b)){
-            return false;
+    public boolean removeEdge(V a, V b) {
+        if (!containsEdge(a, b)) return false; // Edge doesn't exist
+
+        // Remove the edge from node `a` to node `b`
+        Edge<V, L> edge = findEdge(a, b);
+        adjacentEdge.get(a).remove(edge);
+
+        if (!directed) {
+            // If the graph is undirected, also remove the reverse edge
+            Edge<V, L> revEdge = findEdge(b, a);
+            adjacentEdge.get(b).remove(revEdge);
         }
-        else{
-            Edge<V, L> edge = findEdge(a, b);
-            adjacentArch.get(a).remove(edge);
-            if(!directed){
-                Edge<V, L> revEdge = findEdge(b, a);
-                adjacentArch.get(b).remove(revEdge);
-            }
-            return true;
-        }
+        return true;
     }
 
     @Override
-    public int numNodes(){
-        return adjacentArch.size();
+    public int numNodes() {
+        return adjacentEdge.size();
     }
 
     @Override
-    public int numEdges(){
+    public int numEdges() {
         int edgeCount = 0;
-        for(V neighbourNode : adjacentArch.keySet()){
-            edgeCount += getNeighbours(neighbourNode).size();
+        for (V neighbourNode : adjacentEdge.keySet()) {
+            edgeCount += getNeighbours(neighbourNode).size(); // Count edges for each node
         }
         return directed ? edgeCount : (edgeCount / 2);
     }
 
     @Override
-    public Collection<V> getNodes(){
-        return new HashSet<>(adjacentArch.keySet());
+    public Collection<V> getNodes() {
+        return new HashSet<>(adjacentEdge.keySet()); // Return a collection of all nodes in the graph
     }
 
     @Override
-    public HashSet<Edge<V, L>> getEdges(){
+    public HashSet<Edge<V, L>> getEdges() {
         HashSet<Edge<V, L>> edges = new HashSet<>();
-        for(List<Edge<V, L>> edgeList : adjacentArch.values()){
-            edges.addAll(edgeList);
+        for (V node : adjacentEdge.keySet()) {
+            edges.addAll(adjacentEdge.get(node)); // Directly add all edges of the node
         }
         return edges;
     }
 
     @Override
-    public Collection<V> getNeighbours(V a){
+    public Collection<V> getNeighbours(V a) {
         LinkedList<V> neighbours = new LinkedList<>();
-        if(containsNode(a)){
-            for(Edge<V, L> edge : adjacentArch.get(a)){
-                neighbours.add(edge.getEnd());
+        if (containsNode(a)) {
+            for (Edge<V, L> edge : adjacentEdge.get(a)) {
+                neighbours.add(edge.getEnd()); // Add the endpoint of each edge
             }
         }
-        return neighbours;
+        return neighbours; // Return the list of neighbours for node `a`
     }
 
     @Override
-    public L getLabel(V a, V b){
+    public L getLabel(V a, V b) {
         Edge<V, L> edge = findEdge(a, b);
         return (edge != null) ? edge.getLabel() : null;
     }
 
-    private Edge<V, L> findEdge(V a, V b){
-        if(containsNode(a)){
-            for(Edge<V, L> edge : adjacentArch.get(a)){
-                if(edge.getEnd().equals(b)){
-                    return edge;
+    // Added helper method to find an edge between two nodes
+    private Edge<V, L> findEdge(V a, V b) {
+        if (containsNode(a)) {
+            for (Edge<V, L> edge : adjacentEdge.get(a)) {
+                if (edge.getEnd().equals(b)) {
+                    return edge; 
                 }
             }
         }
-        return null;
+        return null; 
     }
 }

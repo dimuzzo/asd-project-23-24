@@ -1,4 +1,4 @@
-# Laboratorio per il corso di Algoritmi e Strutture Dati: regole d'esame, indicazioni generali e suggerimenti, consegne per gli esercizi
+# Progetto per il corso di Algoritmi e Strutture Dati
 
 # Indicazioni generali e suggerimenti
 

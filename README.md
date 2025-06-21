@@ -1,5 +1,9 @@
 # Progetto per il corso di Algoritmi e Strutture Dati
 
+![GitHub last commit](https://img.shields.io/github/last-commit/dimuzzo/asd-project-23-24?style=flat-square&logo=github&label=Last%20Commit)
+![GitHub repo size](https://img.shields.io/github/repo-size/dimuzzo/asd-project-23-24?style=flat-square&logo=github&label=Repo%20Size)
+![GitHub stars](https://img.shields.io/github/stars/dimuzzo/asd-project-23-24?style=flat-square&logo=github&label=Stars)
+
 # Indicazioni generali e suggerimenti
 
 ## Linguaggio in cui sviluppare il laboratorio
@@ -353,3 +357,7 @@ Ogni record contiene i seguenti dati:
 
 - Creare una sottocartella chiamata `ex3-4` all'interno del repository, che conterrà tutte le classi relative a questo esercizio e al precedente, compresi i file di progetto relativi all'IDE Java che avete utilizzato.
 - Includete nella consegna anche un `Makefile` che con il comando `make all` produca i file `.class` eseguibili relativi a tutte le classi implementate. Includete anche tutti i file `.jar` (come junit) necessari alla compilazione.
+
+---
+
+> Created with passion by [dimuzzo](https://github.com/dimuzzo)

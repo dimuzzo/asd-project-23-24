@@ -360,4 +360,4 @@ Ogni record contiene i seguenti dati:
 
 ---
 
-> Created with passion by [dimuzzo](https://github.com/dimuzzo)
+> Created with passion by [Alessandro Demo](https://github.com/dimuzzo)
